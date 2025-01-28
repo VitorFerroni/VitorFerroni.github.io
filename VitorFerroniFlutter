@@ -1,0 +1,106 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Demo Flutter',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Página Inicial do Demo Flutter'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _contador = 0;
+  final TextEditingController _controladorTexto = TextEditingController();
+  String _texto = '';
+
+  void _incrementarContador() {
+    setState(() {
+      _contador++;
+    });
+  }
+
+  void _atualizarContador() {
+    setState(() {
+      _texto = _controladorTexto.text;
+    });
+  }
+
+  @override
+  void dispose() {
+    _controladorTexto.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('Você apertou o botão esta quantidade de vezes:'),
+              Text(
+                '$_contador',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _controladorTexto,
+                decoration: const InputDecoration(
+                  labelText: 'Digite algo',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (text) {
+                  _atualizarContador();
+                },
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  // Você pode adicionar a lógica do botão aqui
+                },
+                child: const Text('Enviar'),
+              ),
+              const SizedBox(height: 20),
+              Text('Quantidade de letras: ${_texto.length}'),
+              const SizedBox(height: 20),
+              Image.network('https://via.placeholder.com/150'),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementarContador,
+        tooltip: 'Incrementar',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
